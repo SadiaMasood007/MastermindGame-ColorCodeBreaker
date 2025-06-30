@@ -1,7 +1,7 @@
 # MastermindGame-ColorCodeBreaker
-# 🧠 CodeBreaker – The Mastermind Color Guessing Game
+**🧠 CodeBreaker – The Mastermind Color Guessing Game**
 
-![Game Screenshot](./assets/colorCodeBreakerGame.png) <!-- Replace with the correct image path -->
+![Game Screenshot](./assets/colorCodeBreakerGame.png) 
 
 ## 📝 Description  
 **CodeBreaker** is a fun and interactive version of the classic Mastermind game built using **HTML, CSS, and JavaScript**.
