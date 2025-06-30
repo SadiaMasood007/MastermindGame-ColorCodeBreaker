@@ -1,0 +1,62 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px auto;
+  width: max-content;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guess-slot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #444;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.feedback-box {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  border: 1px solid #333;
+  padding: 2px;
+  margin-left: 10px;
+  background-color:grey;
+}
+
+.feedback-peg {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid #333;
+}
+
+.colors {
+  margin-top: 20px;
+}
+
+.color-choice {
+  display: inline-block;
+  margin: 0 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  cursor: pointer;
+}
