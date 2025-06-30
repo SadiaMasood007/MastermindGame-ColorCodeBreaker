@@ -6,8 +6,10 @@ let secretCode = [];
 let currentGuess = [];
 let currentRow = 0;
 let selectedColor = null;
+let allowDuplicates = false;
 
 function startGame() {
+  allowDuplicates = document.getElementById("allow-duplicates").checked;
   generateCode();
   currentRow = 0;
   currentGuess = [];
@@ -21,12 +23,13 @@ function generateCode() {
   secretCode = [];
   while (secretCode.length < CODE_LENGTH) {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    if (!secretCode.includes(color)) { // No duplicates
+    if (allowDuplicates || !secretCode.includes(color)) {
       secretCode.push(color);
     }
   }
-  console.log("Secret Code:", secretCode); // For debugging
+  console.log("Secret Code:", secretCode);
 }
+
 function createBoard() {
   const board = document.getElementById("board");
   board.innerHTML = "";
@@ -69,7 +72,6 @@ function createBoard() {
   }
 }
 
-
 function createColorPalette() {
   const palette = document.getElementById("color-palette");
   palette.innerHTML = "";
@@ -84,12 +86,10 @@ function createColorPalette() {
 
 function selectSlot(row, index) {
   if (selectedColor === null || row !== currentRow) return;
-
   const slot = document.querySelector(`#row-${row} .guess-slot:nth-child(${index + 1})`);
   slot.style.backgroundColor = selectedColor;
   currentGuess[index] = selectedColor;
 }
-
 
 function submitGuess(row) {
   if (currentGuess.length !== CODE_LENGTH || currentGuess.includes(undefined)) {
@@ -115,12 +115,11 @@ function submitGuess(row) {
   }
 
   if (currentRow + 1 >= MAX_ATTEMPTS) {
-    document.getElementById("message").textContent = `😢 Game over. Code was: ${secretCode.join(", ")}`;
+    document.getElementById("message").textContent = `😥 Game over. Code was: ${secretCode.join(", ")}`;
     disableBoard();
     return;
   }
 
-  // Move to next row
   document.getElementById(`check-btn-${row}`).disabled = true;
   currentRow++;
   currentGuess = [];
@@ -133,7 +132,6 @@ function submitGuess(row) {
   document.getElementById(`check-btn-${currentRow}`).disabled = false;
 }
 
-
 function getFeedback(guess, code) {
   let black = 0;
   let white = 0;
@@ -141,7 +139,6 @@ function getFeedback(guess, code) {
   const guessCopy = [...guess];
   const codeCopy = [...code];
 
-  // First: Count black pegs
   for (let i = 0; i < CODE_LENGTH; i++) {
     if (guess[i] === code[i]) {
       black++;
@@ -150,7 +147,6 @@ function getFeedback(guess, code) {
     }
   }
 
-  // Then: Count white pegs
   for (let i = 0; i < CODE_LENGTH; i++) {
     if (guessCopy[i]) {
       const index = codeCopy.indexOf(guessCopy[i]);
@@ -171,5 +167,19 @@ function disableBoard() {
   allButtons.forEach(btn => btn.disabled = true);
 }
 
-// Start the game initially
+function showRules() {
+  document.getElementById("rulesModal").style.display = "block";
+}
+
+function closeRules() {
+  document.getElementById("rulesModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById("rulesModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
 startGame();
