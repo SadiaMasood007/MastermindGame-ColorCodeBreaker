@@ -10,14 +10,12 @@
   <h1>CodeBreaker</h1>
 
   <div class="controls">
-    <div class="toggle-container">
-      <label class="toggle-label">
-        <input type="checkbox" id="allow-duplicates" />
-        Allow Duplicates in Secret Code
-      </label>
-    </div>
-    <button onclick="startGame()">Start New Game</button>
+    <button onclick="openDupModal()">Start New Game</button>
     <button onclick="showRules()">Rules</button>
+  </div>
+
+  <div class="secret-code-row" id="secret-code-row">
+
   </div>
 
   <div id="board" class="board"></div>
@@ -34,9 +32,17 @@
         <li>Click a color below and then click a slot to fill it.</li>
         <li>Black peg = correct color & position.</li>
         <li>White peg = correct color, wrong position.</li>
-        <li>You win by getting all 4 black pegs!</li>
-        <li>The "Allow Duplicates" toggle changes whether the secret code can contain repeated colors. Set this <strong>before</strong> starting a new game.</li>
+        <li>The game will ask if duplicates are allowed when starting.</li>
       </ul>
+    </div>
+  </div>
+
+  <div id="dupModal" class="modal">
+    <div class="modal-content">
+      <h2>Allow Duplicate Colors?</h2>
+      <p>Would you like the secret code to allow duplicate colors?</p>
+      <button onclick="startGame(true)">Yes</button>
+      <button onclick="startGame(false)">No</button>
     </div>
   </div>
 

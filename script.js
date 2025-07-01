@@ -8,15 +8,24 @@ let currentRow = 0;
 let selectedColor = null;
 let allowDuplicates = false;
 
-function startGame() {
-  allowDuplicates = document.getElementById("allow-duplicates").checked;
+function openDupModal() {
+  document.getElementById("dupModal").style.display = "block";
+}
+
+function startGame(duplicatesAllowed) {
+  allowDuplicates = duplicatesAllowed;
+  document.getElementById("dupModal").style.display = "none";
+
   generateCode();
   currentRow = 0;
   currentGuess = [];
   selectedColor = null;
+
   document.getElementById("message").textContent = "";
+  document.getElementById("secret-code-row").innerHTML = "";
   createBoard();
   createColorPalette();
+  renderSecretCode(true); 
 }
 
 function generateCode() {
@@ -111,12 +120,14 @@ function submitGuess(row) {
   if (feedback.black === CODE_LENGTH) {
     document.getElementById("message").textContent = "🎉 You cracked the code!";
     disableBoard();
+    renderSecretCode(false); 
     return;
   }
 
   if (currentRow + 1 >= MAX_ATTEMPTS) {
     document.getElementById("message").textContent = `😥 Game over. Code was: ${secretCode.join(", ")}`;
     disableBoard();
+    renderSecretCode(false);
     return;
   }
 
@@ -161,10 +172,20 @@ function getFeedback(guess, code) {
 }
 
 function disableBoard() {
-  const allSlots = document.querySelectorAll(".guess-slot");
-  allSlots.forEach(slot => slot.onclick = null);
-  const allButtons = document.querySelectorAll("button[id^='check-btn']");
-  allButtons.forEach(btn => btn.disabled = true);
+  document.querySelectorAll(".guess-slot").forEach(slot => slot.onclick = null);
+  document.querySelectorAll("button[id^='check-btn']").forEach(btn => btn.disabled = true);
+}
+
+function renderSecretCode(hidden = true) {
+  const row = document.getElementById("secret-code-row");
+  row.innerHTML = "";
+  secretCode.forEach(color => {
+    const div = document.createElement("div");
+    div.classList.add("secret-slot");
+    div.style.backgroundColor = hidden ? "lightgray" : color;
+    div.textContent = hidden ? "?" : "";
+    row.appendChild(div);
+  });
 }
 
 function showRules() {
@@ -176,10 +197,7 @@ function closeRules() {
 }
 
 window.onclick = function(event) {
-  const modal = document.getElementById("rulesModal");
-  if (event.target === modal) {
-    modal.style.display = "none";
-  }
+  if (event.target === document.getElementById("rulesModal")) closeRules();
+  if (event.target === document.getElementById("dupModal")) document.getElementById("dupModal").style.display = "none";
 };
-
 startGame();
